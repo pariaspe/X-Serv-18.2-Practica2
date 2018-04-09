@@ -8,6 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import URLs
 
+# TODO: href a la lista; despues de añadir volver a barra; poner todo bonito para html
+
 FORM = """
     <form action="" method="POST">
         <label for="url">URL a acrotar:</label><br>
@@ -18,7 +20,7 @@ FORM = """
 
 def clean_url(url):
     if url.startswith('http') or url.startswith('https'):
-        return url.replace('%3A%2F%2F', '://')
+        return url
     else:
         return 'http://' + url
 
@@ -26,13 +28,12 @@ def clean_url(url):
 def barra(request):
     if request.method == 'POST':
         print(request.POST['url'])
-        url = URLs(url=request.POST['url'])
+        url = URLs(url=clean_url(request.POST['url']))
         try:
             url.save()
             return HttpResponse('URL añadida!')
         except IntegrityError:
             return HttpResponse('La URL ya ha sido añadida')
-
     elif request.method == 'GET':
         lista = URLs.objects.all()
         respuesta = '<h1>Bienvenido al acortador de URLs:</h1>' + FORM
