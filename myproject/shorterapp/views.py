@@ -26,23 +26,26 @@ def clean_url(url):
 
 @csrf_exempt
 def barra(request):
+    msg = ''
     if request.method == 'POST':
         print(request.POST['url'])
         url = URLs(url=clean_url(request.POST['url']))
         try:
             url.save()
-            return HttpResponse('URL añadida!')
+            msg = 'URL añadida!'
         except IntegrityError:
-            return HttpResponse('La URL ya ha sido añadida')
+            msg = 'La URL ya ha sido añadida.'
     elif request.method == 'GET':
-        lista = URLs.objects.all()
-        respuesta = '<h1>Bienvenido al acortador de URLs:</h1>' + FORM
-        respuesta += '<h3>Lista de URLs acortadas:</h3>'
-        for url in lista:
-            respuesta += str(url.id) + ' ' + url.url + '<br>'
-        return HttpResponse(respuesta)
+        pass
     else:
         return HttpResponse('Metodo invalido:' + request.method)
+
+    lista = URLs.objects.all()
+    respuesta = '<h1>Bienvenido al acortador de URLs:</h1>' + FORM + msg
+    respuesta += '<h3>Lista de URLs acortadas:</h3>'
+    for url in lista:
+        respuesta += str(url.id) + ' ' + url.url + '<br>'
+    return HttpResponse(respuesta)
 
 def numero(request, numero):
     try:
