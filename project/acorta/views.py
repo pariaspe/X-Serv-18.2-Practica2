@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from django.http import HttpResponseNotFound
 from django.db import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
@@ -42,7 +43,7 @@ def barra(request):
     else:
         respuesta = '<html><body>Metodo invalido:' + request.method
         respuesta += '</body></html>'
-        return HttpResponse(respuesta)
+        return HttpResponseNotFound(respuesta)
 
     lista = URLs.objects.all()
     respuesta = '<html><body><h1>Bienvenido al acortador de URLs:</h1>' + FORM
@@ -60,4 +61,9 @@ def numero(request, numero):
         return HttpResponseRedirect(url)
     except URLs.DoesNotExist:
         respuesta = '<html><body>No existe el recurso acortado.</body></html>'
-        return HttpResponse(respuesta)
+        return HttpResponseNotFound(respuesta)
+
+def otro(request, recurso):
+    respuesta = '<html><body>No existe el recurso: /' + recurso
+    respuesta += '</body></html>'
+    return HttpResponseNotFound(respuesta)

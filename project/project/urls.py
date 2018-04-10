@@ -19,4 +19,5 @@ urlpatterns = [
     url(r'^$', 'acorta.views.barra'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^(\d+)$', 'acorta.views.numero'),
+    url(r'(.*)', 'acorta.views.otro'),
 ]
