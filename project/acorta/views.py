@@ -16,11 +16,13 @@ FORM = """
     </form>
 """
 
+
 def clean_url(url):
     if url.startswith('http') or url.startswith('https'):
         return url
     else:
         return 'http://' + url
+
 
 @csrf_exempt
 def barra(request):
@@ -33,11 +35,14 @@ def barra(request):
             msg = 'URL añadida!'
         except IntegrityError:
             url = URLs.objects.get(url=url)
-            msg = 'La URL ya ha sido añadida en: <a href=/' + str(url.id) + '>/' + str(url.id)  +'</a>'
+            msg = 'La URL ya ha sido añadida en: <a href=/' + str(url.id)
+            msg += '>/' + str(url.id) + '</a>'
     elif request.method == 'GET':
         pass
     else:
-        return HttpResponse('<html><body>Metodo invalido:' + request.method + '</body></html>')
+        respuesta = '<html><body>Metodo invalido:' + request.method
+        respuesta += '</body></html>'
+        return HttpResponse(respuesta)
 
     lista = URLs.objects.all()
     respuesta = '<html><body><h1>Bienvenido al acortador de URLs:</h1>' + FORM
@@ -47,9 +52,11 @@ def barra(request):
     respuesta += '</body></html>'
     return HttpResponse(respuesta)
 
+
 def numero(request, numero):
     try:
         url = URLs.objects.get(id=str(numero))
         return HttpResponseRedirect(url)
     except URLs.DoesNotExist:
-        return HttpResponse('<html><body>No existe este recurso acortado.</body></html>')
+        respuesta = '<html><body>No existe el recurso acortado.</body></html>'
+        return HttpResponse(respuesta)
