@@ -46,10 +46,11 @@ def barra(request):
 
     lista = URLs.objects.all()
     respuesta = '<html><body><h1>Bienvenido al acortador de URLs:</h1>' + FORM
-    respuesta += msg + '<h3>Lista de URLs acortadas:</h3>'
+    respuesta += msg + '<h3>Lista de URLs acortadas:</h3><ul>'
     for url in lista:
-        respuesta += str(url.id) + ' ' + url.url + '<br>'
-    respuesta += '</body></html>'
+        respuesta += '<li><a href=/' + str(url.id) + '>/' + str(url.id)
+        respuesta += '</a>. ' + url.url + '<br>'
+    respuesta += '</lul</body></html>'
     return HttpResponse(respuesta)
 
 
